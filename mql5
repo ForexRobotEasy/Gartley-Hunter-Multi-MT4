@@ -1,0 +1,122 @@
+
+// Developer: Forex Robot Easy Team
+// Developer's site: forexroboteasy.com
+
+// Include necessary libraries
+#include <Trade\Trade.mqh>
+#include <Trade\PositionInfo.mqh>
+
+// Define constants
+#define MAX_PAIRS 60
+#define MAX_TIMEFRAMES 9
+
+// Define Gartley patterns
+enum EGartleyPattern
+{
+    ALTERNATE_BAT,
+    BAT,
+    BUTTERFLY,
+    CRAB,
+    CYPHER,
+    DEEP_CRAB,
+    GARTLEY
+};
+
+// Define Gartley Hunter Multi MT4 class
+class CGartleyHunterMT4
+{
+private:
+    int m_pairs[MAX_PAIRS];
+    ENUM_TIMEFRAMES m_timeframes[MAX_TIMEFRAMES];
+    int m_numPairs;
+    int m_numTimeframes;
+
+public:
+    // Constructor
+    CGartleyHunterMT4()
+    {
+        m_numPairs = 0;
+        m_numTimeframes = 0;
+    }
+
+    // Add currency pair
+    void AddPair(int pair)
+    {
+        if (m_numPairs < MAX_PAIRS)
+        {
+            m_pairs[m_numPairs++] = pair;
+        }
+    }
+
+    // Add timeframe
+    void AddTimeframe(ENUM_TIMEFRAMES timeframe)
+    {
+        if (m_numTimeframes < MAX_TIMEFRAMES)
+        {
+            m_timeframes[m_numTimeframes++] = timeframe;
+        }
+    }
+
+    // Scan market for Gartley patterns
+    void ScanMarket()
+    {
+        for (int i = 0; i < m_numPairs; i++)
+        {
+            for (int j = 0; j < m_numTimeframes; j++)
+            {
+                if (IsGartleyPattern(m_pairs[i], m_timeframes[j]))
+                {
+                    NotifyUser('Gartley pattern found on ' + SymbolName(m_pairs[i]) + ' - ' + TimeframeToString(m_timeframes[j]));
+                }
+            }
+        }
+    }
+
+    // Check if Gartley pattern exists
+    bool IsGartleyPattern(int pair, ENUM_TIMEFRAMES timeframe)
+    {
+        // Implement Gartley pattern detection logic here
+        // Return true if pattern is found, false otherwise
+    }
+
+    // Notify user about Gartley pattern
+    void NotifyUser(string message)
+    {
+        // Implement notification logic here
+        // Alert or send mobile notification to the user
+    }
+};
+
+// Entry point of the program
+int OnInit()
+{
+    // Create an instance of Gartley Hunter Multi MT4
+    CGartleyHunterMT4 gartleyHunter;
+
+    // Add currency pairs
+    gartleyHunter.AddPair(Symbol('EURUSD'));
+    gartleyHunter.AddPair(Symbol('GBPUSD'));
+    // Add more currency pairs as required
+
+    // Add timeframes
+    gartleyHunter.AddTimeframe(PERIOD_M1);
+    gartleyHunter.AddTimeframe(PERIOD_M5);
+    // Add more timeframes as required
+
+    // Scan market for Gartley patterns
+    gartleyHunter.ScanMarket();
+
+    return INIT_SUCCEEDED;
+}
+
+// Program termination
+void OnDeinit(const int reason)
+{
+    // Perform necessary cleanup actions here
+}
+
+// Program execution
+void OnTick()
+{
+    // Perform necessary actions on each tick
+}
